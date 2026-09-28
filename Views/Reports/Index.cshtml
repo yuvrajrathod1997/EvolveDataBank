@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Reports | Evolve DataBank";
+    ViewData["Description"] = "Recent market research publications and the full industry directory from Evolve DataBank.";
+}
+
+<div class="page-banner">
+    <div class="wrap">
+        <h1>Reports</h1>
+        <p>Search recent publications or browse every market category by industry.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="wrap">
+        <div class="section-head"><h2>Recent publications</h2></div>
+        <label for="report-filter">Search reports</label>
+        <input id="report-filter" type="text" placeholder="Type a market name" autocomplete="off" style="max-width:28rem;margin-bottom:1.25rem">
+        <ul class="report-list" id="report-list">
+            <partial name="_ReportList" model="Store.Reports" />
+        </ul>
+        <p class="empty-state" id="no-results" hidden>No reports match that search. Try a shorter name, or <a asp-controller="Home" asp-action="Contact" asp-route-type="Enquiry">send us an enquiry</a>.</p>
+    </div>
+</section>
+
+<section class="section tint">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>Browse by industry</h2>
+            <p class="intro" style="margin:0">@Store.TotalCategories market categories in @Store.Industries.Count industry groups.</p>
+        </div>
+        <div class="industry-grid">
+            @foreach (var g in Store.Industries)
+            {
+                <div class="industry" id="@g.Anchor">
+                    <h3>@g.Name</h3>
+                    <p class="count">@g.Categories.Count markets</p>
+                    <ul>
+                        @foreach (var c in g.Categories)
+                        {
+                            <li><a href="@Site.LiveBase/ProductMaster/ProductDetailsCategoryWise?Id=@c.Id">@c.Name</a></li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</section>

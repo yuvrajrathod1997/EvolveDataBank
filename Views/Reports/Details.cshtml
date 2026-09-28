@@ -1,0 +1,186 @@
+@model ReportDetail
+@{
+    ViewData["Title"] = $"{Model.Title} | Evolve DataBank";
+    ViewData["Description"] = $"Global Cold Chain Market was USD {Model.Size2025Text} billion in 2025 and is forecast to reach USD {Model.Size2036Text} billion by 2036 at a {Model.CagrText}% CAGR.";
+    var dot = new HtmlString("<span class=\"dot\" role=\"img\" aria-label=\"Included\"></span>");
+    var dash = new HtmlString("<span class=\"dash\" aria-label=\"Not included\">&ndash;</span>");
+}
+
+<div class="report-head">
+    <div class="wrap">
+        <p class="crumbs"><a asp-controller="Reports" asp-action="Index">Reports</a> / @(string.Join(" / ", Model.BreadcrumbTrail))</p>
+        <h1>@Model.Title</h1>
+        <p class="scope-line">@Model.ScopeLine</p>
+        <p class="report-meta"><span>Report code: <strong>@Model.Code</strong></span><span>Published: <strong>@Model.Published</strong></span></p>
+        <div class="head-actions">
+            <a class="btn" asp-controller="Home" asp-action="Contact" asp-route-report="@Model.Slug" asp-route-type="Enquiry">Report enquiry</a>
+            <a class="btn btn-ghost" asp-controller="Home" asp-action="Contact" asp-route-report="@Model.Slug" asp-route-type="Free sample">Request a free sample</a>
+        </div>
+    </div>
+</div>
+
+<div class="stat-band">
+    <div class="wrap stat-grid">
+        <div><div class="k">Market size (2025)</div><div class="v">USD @Model.Size2025Text<small>billion</small></div></div>
+        <div><div class="k">Forecast (2036)</div><div class="v">USD @Model.Size2036Text<small>billion</small></div></div>
+        <div><div class="k">CAGR (2026 to 2036)</div><div class="v">@(Model.CagrText)%</div></div>
+    </div>
+</div>
+
+<div class="subnav">
+    <div class="wrap">
+        <ul>
+            <li><a href="#snapshot">Market snapshot</a></li>
+            <li><a href="#scope">Scope</a></li>
+            <li><a href="#tables">Market statistics</a></li>
+            <li><a href="#purchase">Purchase full report</a></li>
+            <li><a asp-controller="Home" asp-action="Contact" asp-route-report="@Model.Slug" asp-route-type="Free sample">Request a free sample</a></li>
+        </ul>
+    </div>
+</div>
+
+<section class="section" id="snapshot">
+    <div class="wrap report-body">
+        <div>
+            <h2>Market snapshot</h2>
+            <table class="facts">
+                <tbody>
+                    @foreach (var f in Model.KeyFacts)
+                    {
+                        <tr><th scope="row">@f.Label</th><td>@f.Value</td></tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="prose">
+                <h3>What is driving the market</h3>
+                @foreach (var para in Model.DriverParagraphs)
+                {
+                    <p>@para</p>
+                }
+                <h3>Competitive landscape</h3>
+                <p>Companies active in the broader market include:</p>
+                <ul class="tag-list" style="font-family:var(--font-ui)">
+                    @foreach (var c in Model.Companies)
+                    {
+                        <li>@c</li>
+                    }
+                </ul>
+                <h3 style="margin-top:1.5rem">Takeaway</h3>
+                <p>@Model.Takeaway</p>
+            </div>
+        </div>
+
+        <aside class="aside-box" aria-label="Buy this report">
+            <h3>Buy this report</h3>
+            <ul>
+                @foreach (var p in Store.Prices)
+                {
+                    <li><span>@p.Name</span><span>US$@p.Price.ToString("N0", CultureInfo.InvariantCulture)</span></li>
+                }
+            </ul>
+            <a class="btn" href="#purchase">See purchase options</a>
+            <a class="btn btn-ghost" asp-controller="Home" asp-action="Contact" asp-route-report="@Model.Slug" asp-route-type="Free sample">Free sample</a>
+        </aside>
+    </div>
+</section>
+
+<section class="section tint" id="scope">
+    <div class="wrap">
+        <h2>Scope</h2>
+        <p class="intro">How the market is divided in this report.</p>
+        <div class="table-scroll">
+            <table class="facts">
+                <tbody>
+                    @foreach (var row in Model.ScopeRows)
+                    {
+                        <tr>
+                            <th scope="row">@row.Label</th>
+                            <td><ul class="tag-list">@foreach (var i in row.Items) { <li>@i</li> }</ul></td>
+                        </tr>
+                    }
+                    <tr class="group"><th colspan="2" scope="colgroup">Geography</th></tr>
+                    @foreach (var g in Model.Geography)
+                    {
+                        <tr>
+                            <th scope="row">@g.Region</th>
+                            <td><ul class="tag-list">@foreach (var c in g.Countries) { <li>@c</li> }</ul></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="tables">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>Market statistics</h2>
+            <p class="intro" style="margin:0">@Model.TableCount data tables. Unlock any single table for US$@(ReportStore.TableUnlockPrice).</p>
+        </div>
+        <div class="table-scroll">
+            <table class="matrix">
+                <caption>Tables are in US$ million, 2026 to 2036. The global technology table starts in 2024.</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Market</th>
+                        <th scope="col">By region or country</th>
+                        <th scope="col">By application</th>
+                        <th scope="col">By technology</th>
+                        <th scope="col">By temperature</th>
+                        <th scope="col">By type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Coverage)
+                    {
+                        <tr class="@(row.IsRegion ? "region" : "country")">
+                            <th scope="row">@row.Name</th>
+                            <td>@(row.HasRegionOrCountryCut ? dot : dash)</td>
+                            <td>@dot</td>
+                            <td>@dot</td>
+                            <td>@dot</td>
+                            <td>@dot</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="form-note">Global is split by region; each region is split by country where countries are listed below it.</p>
+    </div>
+</section>
+
+<section class="section tint" id="purchase">
+    <div class="wrap">
+        <h2>Purchase full report</h2>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Licence</th><th>Price</th><th><span style="position:absolute;left:-9999px">Action</span></th></tr></thead>
+                <tbody>
+                    @foreach (var p in Store.Prices)
+                    {
+                        <tr>
+                            <td>@p.Name</td>
+                            <td class="price">US$@p.Price.ToString("N0", CultureInfo.InvariantCulture)</td>
+                            <td><a class="btn btn-ghost" href="@Site.LiveBase/ProductMaster/PurchaseFullReport/?Id=@Model.Slug&amp;RateType=@p.RateType">Purchase</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="form-note">Not sure which fits? <a asp-controller="Home" asp-action="Contact" asp-route-report="@Model.Slug" asp-route-type="Enquiry">Send a report enquiry</a>.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <h2>Related reports</h2>
+        <ul class="report-list">
+            @foreach (var r in Model.Related)
+            {
+                <li><a href="@r.Url"><span class="title">@r.Title</span><span class="meta">@r.Meta</span></a></li>
+            }
+        </ul>
+    </div>
+</section>

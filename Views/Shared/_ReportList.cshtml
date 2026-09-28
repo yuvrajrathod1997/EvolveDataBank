@@ -1,0 +1,13 @@
+@model IEnumerable<ReportSummary>
+@foreach (var r in Model)
+{
+    var href = r.Slug == ReportStore.ColdChainSlug
+        ? Url.Action("Details", "Reports", new { slug = r.Slug })
+        : $"{Site.LiveBase}/ProductMaster/ProductDataDisplay/{r.Slug}";
+    <li data-title="@r.Title">
+        <a href="@href">
+            <span class="title">@r.Title</span>
+            <span class="meta">Trends &amp; Forecast to 2036</span>
+        </a>
+    </li>
+}

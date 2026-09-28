@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Services | Evolve DataBank";
+    ViewData["Description"] = "Purchase options for Evolve DataBank market reports: single use, enterprise license, Excel data pack and single data tables.";
+}
+
+<div class="page-banner">
+    <div class="wrap">
+        <h1>Services</h1>
+        <p>Buy a full report, unlock single data tables, or ask for a sample first.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="wrap">
+        <h2>Ways to buy</h2>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Option</th><th>Price (US$)</th><th>What you get</th></tr></thead>
+                <tbody>
+                    @foreach (var p in Store.Prices)
+                    {
+                        <tr>
+                            <td><strong>@p.Name</strong></td>
+                            <td class="price">@p.Price.ToString("N0", CultureInfo.InvariantCulture)</td>
+                            <td>@p.Description</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td><strong>Single data table</strong></td>
+                        <td class="price">@ReportStore.TableUnlockPrice</td>
+                        <td>One data table from a report, unlocked on its own.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="form-note">Prices are those listed on the Global Cold Chain Market report. Check each report page for its own pricing.</p>
+    </div>
+</section>
+
+<section class="section tint">
+    <div class="wrap split">
+        <div>
+            <h2>Not ready to buy?</h2>
+            <p class="intro">Ask us first. We can send a sample or answer questions about what a report covers.</p>
+        </div>
+        <ul class="plain-list">
+            <li><strong>Request a free sample</strong>See how a report is laid out before you purchase. <a asp-controller="Home" asp-action="Contact" asp-route-type="Free sample">Request a sample</a></li>
+            <li><strong>Report enquiry</strong>Ask about scope, segments or custom cuts of the data. <a asp-controller="Home" asp-action="Contact" asp-route-type="Enquiry">Send an enquiry</a></li>
+        </ul>
+    </div>
+</section>

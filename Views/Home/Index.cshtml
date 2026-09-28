@@ -1,0 +1,103 @@
+@{
+    ViewData["Title"] = "Evolve DataBank: market data across 170 industries";
+    ViewData["Description"] = "Market reports and data tables across 170 industries and 150+ countries from Evolve Business Intelligence.";
+    var cc = Store.ColdChain;
+}
+
+<section class="hero">
+    <div class="wrap">
+        <div>
+            <h1>Unleashing the Power of Data: Empowering People Worldwide!</h1>
+            <p class="lede">Discover insights across 170 industries and 150+ countries.</p>
+            <form class="search-form" asp-controller="Reports" asp-action="Index" method="get" role="search">
+                <label for="hero-q" style="position:absolute;left:-9999px">Search market reports</label>
+                <input id="hero-q" type="text" name="q" placeholder="Search market reports, e.g. Smart Grid" autocomplete="off">
+                <button type="submit">Search</button>
+            </form>
+            <p class="quick-links">Popular:
+                <a asp-controller="Reports" asp-action="Details" asp-route-slug="@ReportStore.ColdChainSlug">Cold Chain</a>
+                <a asp-controller="Reports" asp-action="Index" asp-route-q="smart grid">Smart Grid</a>
+                <a asp-controller="Reports" asp-action="Index" asp-route-q="vertical farming">Vertical Farming</a>
+            </p>
+        </div>
+        <aside class="scale-panel" aria-label="Featured report">
+            <h2>Featured report: <a asp-controller="Reports" asp-action="Details" asp-route-slug="@cc.Slug">Global Cold Chain Market</a></h2>
+            <div class="scale-row">
+                <div class="label"><span>2025 market size</span><strong>USD @cc.Size2025Text billion</strong></div>
+                <div class="track"><div class="bar now" style="width:@(cc.BarNowPercent)%"></div></div>
+            </div>
+            <div class="scale-row">
+                <div class="label"><span>2036 forecast</span><strong>USD @cc.Size2036Text billion</strong></div>
+                <div class="track"><div class="bar later" style="width:100%"></div></div>
+            </div>
+            <div class="scale-foot">
+                <span>CAGR 2026 to 2036: <strong>@(cc.CagrText)%</strong></span>
+                <span>Bars drawn to scale, about <strong>@(cc.GrowthMultiple)x</strong> growth</span>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>Recent publications</h2>
+            <a asp-controller="Reports" asp-action="Index">See all reports</a>
+        </div>
+        <ul class="report-list">
+            <partial name="_ReportList" model="Store.Reports" />
+        </ul>
+    </div>
+</section>
+
+<section class="section tint">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>Browse by industry</h2>
+            <p class="intro" style="margin:0">@Store.Industries.Count industry groups, @Store.TotalCategories market categories.</p>
+        </div>
+        <div class="industry-tiles">
+            @foreach (var g in Store.Industries)
+            {
+                <a href="@Url.Action("Index", "Reports")#@g.Anchor"><strong>@g.Name</strong><span>@g.Categories.Count markets</span></a>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap split">
+        <div>
+            <h2>What every report gives you</h2>
+            <p class="intro">Each report follows the same structure, so you can compare markets without relearning the layout.</p>
+        </div>
+        <ul class="plain-list">
+            <li><strong>Market snapshot</strong>Market size, forecast value and CAGR at the top of the page.</li>
+            <li><strong>Segmentation</strong>Technology, type, temperature and application splits, plus geography.</li>
+            <li><strong>Regional and country data tables</strong>Priced in US$ million, from global down to individual countries.</li>
+            <li><strong>Competitive landscape</strong>The companies shaping each market and how they compete.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section tint">
+    <div class="wrap">
+        <div class="section-head">
+            <h2>Ways to buy</h2>
+            <a asp-controller="Home" asp-action="Services">Compare options</a>
+        </div>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Option</th><th>Price (US$)</th></tr></thead>
+                <tbody>
+                    @foreach (var p in Store.Prices)
+                    {
+                        <tr><td>@p.Name</td><td class="price">@p.Price.ToString("N0", CultureInfo.InvariantCulture)</td></tr>
+                    }
+                    <tr><td>Single data table</td><td class="price">@ReportStore.TableUnlockPrice</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="form-note">Prices shown are for the Global Cold Chain Market report. Other reports may differ.</p>
+    </div>
+</section>

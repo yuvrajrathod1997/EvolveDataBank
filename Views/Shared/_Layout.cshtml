@@ -1,0 +1,77 @@
+@{
+    var ctl = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var act = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var nav = new[]
+    {
+        (Label: "Home", Controller: "Home", Action: "Index"),
+        (Label: "About Us", Controller: "Home", Action: "About"),
+        (Label: "Reports", Controller: "Reports", Action: "Index"),
+        (Label: "Services", Controller: "Home", Action: "Services"),
+        (Label: "Contact Us", Controller: "Home", Action: "Contact"),
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="@ViewData["Description"]">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@@12..96,400;12..96,500;12..96,600;12..96,700&amp;family=Source+Serif+4:opsz,wght@@8..60,400;8..60,600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+    <div class="wrap">
+        <a class="brand" asp-controller="Home" asp-action="Index"><img src="@Site.LogoUrl" alt="Evolve DataBank, by Evolve Business Intelligence" width="160" height="46"></a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="site-nav" id="site-nav" aria-label="Main">
+            <ul>
+                @foreach (var item in nav)
+                {
+                    var current = ctl == item.Controller && (item.Controller == "Reports" || act == item.Action);
+                    <li><a asp-controller="@item.Controller" asp-action="@item.Action" aria-current="@(current ? "page" : null)">@item.Label</a></li>
+                }
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main id="main">
+    @RenderBody()
+</main>
+
+<footer class="site-footer">
+    <div class="wrap">
+        <div class="footer-cols">
+            <div>
+                <h2>Address</h2>
+                <p><a href="https://maps.app.goo.gl/tc3tUN7BNgZf8KQd8">M/S Evolve Business Intelligence, C-218, 2nd floor, M-Cube, N.H. 48, Balitha, Vapi, Valsad, Gujarat</a></p>
+            </div>
+            <div>
+                <h2>Call us</h2>
+                <p><a href="tel:+916353963987">+91 6353963987</a></p>
+            </div>
+            <div>
+                <h2>Mail us</h2>
+                <p><a href="mailto:info@@evolvebi.com">info&#64;evolvebi.com</a><br><a href="mailto:sales@@evolvebi.com">sales&#64;evolvebi.com</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <a href="https://evolvebi.com/">Evolve DataBank</a> (powered by Evolve Business Intelligence)<br>Designed and developed by <a href="https://scriptindia.in/">Script India</a></p>
+            <nav aria-label="Legal">
+                <a href="@Site.LiveBase/Home/Privacy">Privacy Policy</a>
+                <a href="@Site.LiveBase/Home/TermsAndConditions">Terms and Conditions</a>
+                <a href="@Site.LiveBase/Home/CancellationAndRefundPolicy">Cancellation and Refund Policy</a>
+            </nav>
+        </div>
+    </div>
+</footer>
+
+<script src="~/js/main.js" asp-append-version="true"></script>
+</body>
+</html>

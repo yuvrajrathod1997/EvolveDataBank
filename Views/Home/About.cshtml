@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "About Us | Evolve DataBank";
+    ViewData["Description"] = "About Evolve DataBank, the market data platform of Evolve Business Intelligence.";
+}
+
+<div class="page-banner">
+    <div class="wrap">
+        <h1>About Evolve DataBank</h1>
+        <p>Market data for people who need to size a market, compare regions and decide where to invest.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="wrap split">
+        <div>
+            <h2>Who we are</h2>
+            @* CONFIRM with client: replace with approved About Us copy. Facts below come from the live site. *@
+            <p>Evolve DataBank is the online market data platform of Evolve Business Intelligence, based in Vapi, Gujarat, India.</p>
+            <p>It publishes market reports and data tables covering 170 industries and more than 150 countries.</p>
+        </div>
+        <div>
+            <h2>Industries covered</h2>
+            <ul class="tag-list">
+                @foreach (var g in Store.Industries)
+                {
+                    <li>@g.Name</li>
+                }
+            </ul>
+            <p class="form-note">Across these @Store.Industries.Count groups there are @Store.TotalCategories market categories. <a href="@Url.Action("Index", "Reports")#automotive">Browse the directory</a>.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section tint">
+    <div class="wrap split">
+        <div>
+            <h2>What is in a report</h2>
+        </div>
+        <ul class="plain-list">
+            <li><strong>Market snapshot</strong>Market size, forecast value and CAGR.</li>
+            <li><strong>Scope and segmentation</strong>How the market splits by technology, type, temperature, application and geography.</li>
+            <li><strong>Data tables</strong>Global, regional and country tables in US$ million.</li>
+            <li><strong>Competitive landscape</strong>The companies active in the market.</li>
+        </ul>
+    </div>
+</section>
+
+<section class="section">
+    <div class="wrap">
+        <h2>Talk to us</h2>
+        <p class="intro">Questions about a report or a market we do not cover yet? <a asp-controller="Home" asp-action="Contact">Contact us</a>.</p>
+    </div>
+</section>
